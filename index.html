@@ -10,7 +10,7 @@
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ guess: 'NHNC{', note: '' })
+    body: JSON.stringify({ guess: 'NHNC{', note: '' }) // khac
   });
   // 2) GET /inner.html để đọc best-prefix
   const html = await fetch('/inner.html', { credentials: 'include' }).then(r=>r.text());
