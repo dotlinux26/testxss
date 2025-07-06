@@ -1,5 +1,10 @@
 <script>
-  const newWindow = window.open('', '_blank'); // Mở tab mới (nếu được phép)
+window.onload = function() {
+  const newWindow = window.open('', '_blank');
+  if (!newWindow) {
+    console.error('❌ Bot không cho phép mở tab mới');
+    return;
+  }
 
   const form = document.createElement('form');
   form.method = 'POST';
@@ -19,10 +24,12 @@
   form.appendChild(guess);
   form.appendChild(note);
 
-  document.body.appendChild(form);
+  document.body.appendChild(form); // ← CHỖ NÀY PHẢI CHẠY SAU KHI DOM SẴN SÀNG
   form.submit();
 
   setTimeout(() => {
     window.location = 'http://127.0.0.1:5000/';
-  }, 800);
+  }, 500);
+};
 </script>
+
