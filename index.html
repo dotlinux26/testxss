@@ -12,6 +12,8 @@
 
 const blob = new Blob([html], { type: 'text/html' });
 const url = URL.createObjectURL(blob);
-window.open(url);
-
+const a = document.createElement('a');
+a.href = url;
+a.download = 'exploit.html';  // ép trình duyệt tải về
+a.click();
 </script>
